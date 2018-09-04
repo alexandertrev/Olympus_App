@@ -1,0 +1,8 @@
+{
+  "name": "iPlant_App2",
+  "app_id": "4647156f",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}

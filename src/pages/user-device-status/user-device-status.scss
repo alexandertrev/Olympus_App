@@ -1,0 +1,100 @@
+page-user-device-status {
+    .item-profile {
+        width: 100%;
+        background-position: center center;
+        background-size: cover;
+        height: 100px;
+      }
+      .item-detail {
+        width: 100%;
+        background: white;
+        position: absolute;
+      }
+      .icon-Red{
+        color:red;
+      }
+      .icon-Orange{
+        color:Orange;
+      }
+      .icon-Green{
+        color: rgb(3, 219, 3);
+      }
+      .icon-Light-blue{
+        color: rgb(0, 225, 255);
+      }
+      .icon-Blue{
+        color: blue;
+      }
+      .mySpan{
+        font-size: 12px;
+        line-height: 1.5;
+        color: #60646B;
+      }
+      .mySpan2{
+        font-size: 18px;
+        line-height: 1.5;
+        color: #60646B;
+      }
+      .sensorSpan{
+        font-size: 12px;
+        line-height: 1.5;
+        color: #60646B;
+        min-width: 14px;
+        display: inline-block;
+        text-align: right;
+      }
+
+      .sunSpan{
+        font-size: 12px;
+        line-height: 1.5;
+        color: #60646B;
+        min-width: 14px;
+        display: inline-block;
+      }
+    
+      .fab[mini]{
+        width: 20px;
+        height: 20px;
+      }
+      .connectionSpan{
+        margin-left: 35px;
+        position: absolute;
+        margin-top: 10px;
+      }
+      .waterSpan{
+        position: absolute;
+        margin-top: -10px;
+        font-size: 13px;
+        color: #60646B;
+      }
+      .text-on-bottom > .button-inner {
+        flex-direction: column;
+      }
+      //--------------------------------------------------------------------------------------
+      
+      .pulse-button-Connected {
+        background: #64d45a;
+        box-shadow: 0 0 0 0 rgba(#64d45a, .5);
+        -webkit-animation: pulse 1.5s infinite;
+      }
+    
+      .pulse-button-Disconnected {
+        background: #e70707;
+        box-shadow: 0 0 0 0 rgba(#e70707, .5);
+        -webkit-animation: pulse 1.5s infinite;
+      }
+    
+      @-webkit-keyframes pulse {
+        0% {
+          @include transform(scale(.9));
+        }
+        70% {
+          @include transform(scale(1));
+          box-shadow: 0 0 0 5px;
+        }
+          100% {
+          @include transform(scale(.9));
+          box-shadow: 0 0 0 0;
+        }
+      }
+}

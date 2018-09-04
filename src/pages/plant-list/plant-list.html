@@ -1,0 +1,38 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Plants list</ion-title>
+
+    <ion-buttons end *ngIf="showAdd && gotServerAnswer && !gotErrorFromServer">
+      <button ion-button icon-only (click)="addItem()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+  <ion-toolbar no-border-top [(ngModel)]="searchField">
+    <ion-searchbar placeholder="Search plant"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item-sliding *ngFor="let plant of plants | filter: searchField">
+      <button ion-item (click)="openItem(plant)">
+        <ion-thumbnail item-start>
+          <img [src]="plant.pic" />
+        </ion-thumbnail>
+        <h2>{{plant.plantName}}</h2>
+        <p><strong>Plant Family: </strong>{{plant.plantFamily}}</p>
+      </button>
+
+      <ion-item-options>
+        <button ion-button color="danger" (click)="deleteItem(plant)">
+            DELETE
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+  <p *ngIf="!gotServerAnswer" padding>Loading plants list, please wait...</p>
+  <p *ngIf="gotServerAnswer && !gotErrorFromServer && plants.length==0" padding>Plants not added yet, press on the plus above to add one.</p>
+  <p *ngIf="gotServerAnswer && gotErrorFromServer" padding>Error occurred try again later</p>
+</ion-content>

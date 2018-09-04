@@ -1,0 +1,172 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-buttons left>
+      <button ion-button icon-left (click)="back()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Plant: {{userDevice.name}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="presentRadioPopover($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles" refreshingText="Refreshing..."></ion-refresher-content>
+  </ion-refresher>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-6>
+        <ion-card style="margin:0px">
+          <div *ngIf="userDevice && userDevice.pic" class="item-profile" text-center #pic [style.background-image]="'url(' + userDevice.pic + ')'">
+          </div>
+        </ion-card>
+      </ion-col>
+      <ion-col col-6>
+        <p style="margin:0px;">
+          <strong>Connection status:</strong>
+        </p>
+        <ion-fab>
+          <button ion-fab mini color="myGrey" [ngClass]="'pulse-button-'+deviceStatus"></button>
+        </ion-fab>
+        <span class="connectionSpan">{{deviceStatus}}</span>
+        <ion-chip *ngIf="isWateringInProgress" style="margin-left:40px;margin-top:35px;background:transparent;" big>
+          <!-- <ion-icon #waterIcon name="ios-color-fill" style="font-size: 50px;line-height: initial;width: 60px;height: 60px;border: 1px solid rgb(72, 138, 255);"></ion-icon> -->
+          <ion-icon #waterIcon name="ios-color-fill" style="font-size: 50px;line-height: initial;width: 60px;height: 60px;"></ion-icon>
+        </ion-chip>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-12>
+        <hr>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col col-6>
+        <p style="margin-top:0px">
+          <strong>Last watering session:</strong>
+        </p>
+        <span *ngIf="lastWaterRecord" class="waterSpan">{{lastWaterRecord | date:'dd/MM/yy HH:mm' }}</span>
+        <span *ngIf="!lastWaterRecord" class="waterSpan">No record yet</span>
+      </ion-col>
+      <ion-col col-6>
+        <button ion-button #waterBtn round outline (click)='waterNow($event)'>
+          <ion-icon name="md-color-fill"></ion-icon> &nbsp;Water Now</button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col col-12>
+        <hr>
+        <span class="mySpan" style="margin-left: 100px;">Pull down to update</span>
+        <h2 style="margin-top:0px">Plant status -
+          <span *ngIf="lastSensorRecord" class="mySpan">Updated - {{lastSensorRecord.date | date:'dd/MM/yy HH:mm'}}</span>
+          <span *ngIf="!lastSensorRecord" class="mySpan2">Not yet updated</span>
+          <!-- <button ion-button outline small (click)="openPlantsList()" ><span style="font-size: 9px;">Update</span></button> -->
+        </h2>
+
+        <ion-row>
+          <ion-col col-4>
+            <strong>Water level: </strong>
+          </ion-col>
+          <ion-col col-2>
+            <span *ngIf="lastSensorRecord" class="sensorSpan">{{lastSensorRecord.water_level}}</span>
+            <span *ngIf="!lastSensorRecord">&Oslash;</span>
+            <span style="font-size: 12px;">% </span>
+            <ion-icon small [ngClass]="'icon-'+water_lvl_status" name="md-beaker"></ion-icon>
+          </ion-col>
+
+          <ion-col col-6>
+            <ion-icon *ngIf="water_lvl_status!='Green'" [ngClass]="'icon-'+water_lvl_status" (click)="openInfo($event,'water_lvl')" name="md-information-circle"></ion-icon>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col col-4>
+            <strong>Moist level: </strong>
+          </ion-col>
+          <ion-col col-2>
+            <span *ngIf="lastSensorRecord" class="sensorSpan">{{lastSensorRecord.moist}}</span>
+            <span *ngIf="!lastSensorRecord">&Oslash;</span>
+            <span style="font-size: 12px;">% </span>
+            <ion-icon small [ngClass]="'icon-'+moist_status" name="ios-water-outline"></ion-icon>
+          </ion-col>
+          
+          <ion-col col-6>
+            <ion-icon *ngIf="moist_status!='Green'" [ngClass]="'icon-'+moist_status" (click)="openInfo($event,'moist')" name="md-information-circle"></ion-icon>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-4>
+            <strong>Heat level: </strong>
+          </ion-col>
+          <ion-col col-2>
+            <span *ngIf="lastSensorRecord" class="sensorSpan">{{lastSensorRecord.heat}}</span>
+            <span *ngIf="!lastSensorRecord">&Oslash;</span>&deg;&nbsp;
+            <ion-icon small [ngClass]="'icon-'+heat_status" name="thermometer"></ion-icon>
+          </ion-col>
+          
+          <ion-col col-6>
+            <ion-icon *ngIf="heat_status!='Green'" [ngClass]="'icon-'+heat_status" (click)="openInfo($event,'heat')" name="md-information-circle"></ion-icon>
+          </ion-col>
+        </ion-row>
+        
+        <ion-row>
+          <ion-col col-4>
+            <strong>Sun level: </strong>
+          </ion-col>
+          <ion-col col-3>
+            <span *ngIf="lastSensorRecord" class="sunSpan">{{lastSensorRecord.sun}}</span>
+            <span *ngIf="!lastSensorRecord">&Oslash;</span> &nbsp;
+            <!-- <ion-icon small [ngClass]="'icon-'+sun_status" name="md-sunny"></ion-icon> -->
+          </ion-col>
+          
+          <!-- <ion-col col-5>
+            <ion-icon *ngIf="sun_status!='Green'" [ngClass]="'icon-'+sun_status" (click)="openInfo($event,'sun')" name="md-information-circle"></ion-icon>
+          </ion-col> -->
+        </ion-row>
+
+        <ion-row>
+          <ion-col col-4>
+            <strong>Doors status: </strong>
+          </ion-col>
+          <ion-col col-2>
+            <span *ngIf="lastSensorRecord && !lastSensorRecord.doors" class="sensorSpan">Closed</span>
+            <span *ngIf="lastSensorRecord && lastSensorRecord.doors" class="sensorSpan">Open</span>
+            <span *ngIf="!lastSensorRecord">&Oslash;</span>
+          </ion-col>
+          <ion-col col-1>
+            <ion-icon color='primary' (click)="openInfo($event,'doors')" name="md-information-circle"></ion-icon>
+          </ion-col>
+          <ion-col col-4 style="padding-top:0px;">
+            <button ion-button outline small style="height:18px;max-width: 48.85px;" *ngIf="lastSensorRecord && !lastSensorRecord.doors" (click)="changeDoorsState()"><span style="font-size:9px;">Open</span></button>
+            <button ion-button outline small style="height:18px;max-width: 48.85px;" *ngIf="lastSensorRecord && lastSensorRecord.doors" (click)="changeDoorsState()"><span style="font-size:9px;">Close</span></button>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col col-4>
+            <strong>Lamp status: </strong>
+          </ion-col>
+          <ion-col col-2>
+            <span *ngIf="lastSensorRecord && !lastSensorRecord.lamp" class="sensorSpan">Off</span>
+            <span *ngIf="lastSensorRecord && lastSensorRecord.lamp" class="sensorSpan">On</span>
+            <span *ngIf="!lastSensorRecord">&Oslash;</span>
+          </ion-col>
+          <ion-col col-1>
+            <ion-icon color='primary' (click)="openInfo($event,'lamp')" name="md-information-circle"></ion-icon>
+          </ion-col>
+          <ion-col col-4 style="padding-top:0px;">
+            <button ion-button outline small style="height:18px;min-width: 48.85px;" *ngIf="lastSensorRecord && !lastSensorRecord.lamp" (click)="changeLampState()"><span style="font-size:9px;">On</span></button>
+            <button ion-button outline small style="height:18px;min-width: 48.85px;" *ngIf="lastSensorRecord && lastSensorRecord.lamp" (click)="changeLampState()"><span style="font-size:9px;">Off</span></button>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

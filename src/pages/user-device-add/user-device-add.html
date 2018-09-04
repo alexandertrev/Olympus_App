@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Add Plant Device</ion-title>
+    <ion-buttons start>
+        <button ion-button (click)="cancel()">
+          <span color="primary" showWhen="ios">
+            Cancel
+          </span>
+          <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+        </button>
+      </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <div *ngIf="!form.controls['mac'].value">
+    <p>Press on "Scan code" button and scan the barcode on the downside of your device</p>
+    <button ion-button full icon-left color="greenColor" (click)="scanCode()">
+      <ion-icon name="ios-qr-scanner-outline"></ion-icon> Scan Code
+    </button>
+  </div>
+
+  <ion-card *ngIf="submited">
+    <ion-card-content>
+      <p class="success">Success!</p>
+      <p>The device been linked to you.</p>
+      <hr>
+      <p>You need config your device before you will be able to use it.</p>
+      <p>To config, plug the device to your home router and connect your phone to the same network and press config</p>
+      <br>
+      <br>
+      <button ion-button full (click)="openConfigPage()">Config now</button>
+      <button ion-button full (click)="configLater()">Config later</button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

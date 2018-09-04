@@ -1,0 +1,124 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Plant Profile settings</ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="cancel()">
+        <span color="primary" showWhen="ios">
+          Cancel
+        </span>
+        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons end>
+      <button ion-button (click)="done()" [disabled]="!plantForm.valid" strong>
+        <span color="primary" showWhen="ios">
+          Done
+        </span>
+        <ion-icon name="md-checkmark" showWhen="core,android,windows"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <h1 text-center>Choose Profile</h1>
+  <form *ngIf="plantForm" [formGroup]="plantForm" (ngSubmit)="addDeviceToUser()">
+    <ion-list no-lines>
+      <ion-item>
+        <ion-label floating>Name</ion-label>
+        <ion-input type="text" formControlName="name"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Plant family</ion-label>
+        <ion-select formControlName="plantFamily" (ionChange)="familyChanged($event)">
+          <ion-option *ngFor="let family of families" [value]="family.familyName">{{family.familyName}}</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Plant</ion-label>
+        <ion-select formControlName="plantId" (ionChange)="onPlantChange()">
+          <ion-option *ngFor="let plant of plants" [value]="plant._id">{{plant.plantName}}</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <strong>Location:</strong>
+          <span [ngClass]="'location-'+!plantForm.controls['location'].value">Outside</span> /
+          <span [ngClass]="'location-'+plantForm.controls['location'].value">Inside</span>
+        </ion-label>
+        <ion-toggle formControlName="location" color="secondary"></ion-toggle>
+      </ion-item>
+
+    </ion-list>
+  </form>
+
+  <hr>
+
+  <ion-list>
+    <ion-item>
+      <ion-label floating>Choose Profile</ion-label>
+      <ion-select [(ngModel)]="profile" name="profile" (ionChange)="profileChanged()">
+        <ion-option [value]="curProfile">Current</ion-option>
+        <ion-option [value]="curDefaultProfile">Plant Default</ion-option>
+        <ion-option *ngFor="let profile of profiles" [value]="profile">{{profile.profileName}}</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <ion-item>
+    <ion-label floating>Sun needs</ion-label>
+    <ion-select [(ngModel)]="sun">
+      <ion-option value="Full sun">Full sun</ion-option>
+      <ion-option value="Partial sun">Partial sun</ion-option>
+      <ion-option value="Shady">Shady</ion-option>
+      <ion-option value="Full shade">Full shade</ion-option>
+    </ion-select>
+  </ion-item>
+
+  <!-- <ion-list no-lines>
+    <ion-item>
+      Sun needs
+      <ion-icon big name="ios-sunny-outline" style="display:initial;"></ion-icon>%
+      <ion-badge item-end [ngClass]="'sunBadge-'+isDisabled">{{sun}}</ion-badge>
+    </ion-item>
+    <ion-item>
+      <ion-range [disabled]='isDisabled' [(ngModel)]="sun" min="0" max="100" step="10" color="myYellow" snaps="true">
+        <ion-icon range-left small [ngClass]="'sunIcon-'+isDisabled" name="ios-partly-sunny-outline"></ion-icon>
+        <ion-icon range-right small [ngClass]="'sunIcon-'+isDisabled" name="md-sunny"></ion-icon>
+      </ion-range>
+    </ion-item>
+  </ion-list> -->
+
+  <ion-list no-lines>
+    <ion-item>
+      Soil needs
+      <ion-icon small name="ios-water-outline" style="display:initial;"></ion-icon>%
+      <ion-badge item-end [ngClass]="'soilBadge-'+isDisabled">{{moist.lower}}</ion-badge>
+      <ion-badge item-end [ngClass]="'soilBadge-'+isDisabled">{{moist.upper}}</ion-badge>
+    </ion-item>
+    <ion-item>
+      <ion-range [disabled]='isDisabled' dualKnobs="true" [(ngModel)]="moist" min="0" max="100" step="10" color="myBrown" snaps="true">
+        <ion-icon range-left small [ngClass]="'soilIcon-'+isDisabled" name="ios-water-outline"></ion-icon>
+        <ion-icon range-right small [ngClass]="'soilIcon-'+isDisabled" name="water"></ion-icon>
+      </ion-range>
+    </ion-item>
+  </ion-list>
+
+  <ion-list no-lines>
+    <ion-item>
+      Temperature &#8451;
+      <ion-badge item-end [ngClass]="'heatBadge-'+isDisabled">{{heat.lower}}</ion-badge>
+      <ion-badge item-end [ngClass]="'heatBadge-'+isDisabled">{{heat.upper}}</ion-badge>
+    </ion-item>
+    <ion-item>
+      <ion-range [disabled]='isDisabled' dualKnobs="true" [(ngModel)]="heat" min="0" max="50" step="2" color="danger" snaps="true">
+        <ion-icon range-left small [ngClass]="'heatIcon-'+isDisabled" name="thermometer"></ion-icon>
+        <ion-icon range-right [ngClass]="'heatIcon-'+isDisabled" name="thermometer"></ion-icon>
+      </ion-range>
+    </ion-item>
+  </ion-list>
+</ion-content>

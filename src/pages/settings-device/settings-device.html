@@ -1,0 +1,61 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Wifi settings</ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="cancel()">
+        <span color="primary" showWhen="ios">
+          Cancel
+        </span>
+        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+<ion-content padding>
+  <ion-slides #configSlider dir="ltr">
+    <!-- ---------------------------------------------------------SLIDE 0 WELCOME----------------------------------------------- -->
+    <ion-slide>
+      <h1>Welcome To wifi configuration</h1>
+      <p text-left>If your device already connected to wifi, connect with your phone to the same wifi network and press Config.</p>
+      <p text-left>If your device isnt connected to wifi, plug the device to your home router and connect your phone to the same network
+        and press config</p>
+      <button ion-button large (click)="findDevice()">Config</button>
+    </ion-slide>
+    <!-- ---------------------------------------------------------SLIDE 1 WIFI-------------------------------------------------- -->
+    <ion-slide padding>
+      <div *ngIf="searchingWifi" style="text-align: center;">
+        <br>
+        <br> Detecting WiFi!
+        <br>
+        <br>
+        <ion-spinner name="bubbles"></ion-spinner>
+        <br>
+        <br>
+      </div>
+      <form *ngIf="wifiForm && !searchingWifi" [formGroup]="wifiForm" (ngSubmit)="wifiConfirmConfig()">
+        <h1>Choose wifi network</h1>
+        <ion-list no-lines>
+
+          <ion-item>
+            <ion-label floating>Choose network</ion-label>
+            <ion-select formControlName="ssid" (ionChange)="wifiChanged()">
+              <ion-option *ngFor="let network of networks" [value]="network.ssid + ':' + network.security">{{network.ssid}} - {{ network.security }}</ion-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item *ngIf="showPassword">
+            <ion-label floating>Password</ion-label>
+            <ion-input type="password" formControlName="password"></ion-input>
+          </ion-item>
+          <br>
+
+          <button ion-button full [disabled]="wifiSubmitAtempt || !wifiForm.valid">
+            <ion-spinner *ngIf="wifiSubmitAtempt" name="bubbles"></ion-spinner> Confirm</button>
+          <button ion-button full (click)="getWifiNetworks()" [disabled]="wifiSubmitAtempt">Scan again</button>
+        </ion-list>
+      </form>
+    </ion-slide>
+  </ion-slides>
+</ion-content>

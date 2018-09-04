@@ -1,0 +1,28 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ plant.plantName }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <div class="item-profile" text-center #pic [style.background-image]="'url(' + plant.pic + ')'">
+  </div>
+
+  <div class="item-detail" padding>
+      <h2>{{plant.plantName}}</h2>
+      <p><strong>Plant Family: </strong>{{plant.plantFamily}}</p>
+      <p><strong>Info: </strong>{{plant.info}}</p>
+      <hr>
+      <h2>Profile</h2>
+      <p><strong>Sun needs: </strong>{{profile.sunNeeds}}</p>
+      <p><strong>Min heat: </strong>{{profile.heatMin}}</p>
+      <p><strong>Max heat: </strong>{{profile.heatMax}}</p>
+      <p><strong>Min moist: </strong>{{profile.moistMin}}</p>
+      <p><strong>Max moist: </strong>{{profile.moistMax}}</p>
+  </div>
+
+
+</ion-content>

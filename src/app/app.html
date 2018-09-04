@@ -1,0 +1,22 @@
+<ion-menu [content]="content" id="menu1">
+    <ion-header>
+        <ion-toolbar>
+            <ion-card-header>
+                {{username}}
+            </ion-card-header>
+            <ion-card-content>
+                <button ion-button outline small (click)="logOut()">Log out</button>
+            </ion-card-content>
+        </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+        <ion-list>
+            <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+                {{p.title}}
+            </button>
+        </ion-list>
+    </ion-content>
+
+</ion-menu>
+<ion-nav #content [root]="rootPage"></ion-nav>

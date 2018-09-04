@@ -1,0 +1,25 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ item.familyName }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <div class="item-detail" padding>
+    <h2>{{item.mac}}</h2>
+    <p><strong>Info: </strong>{{item.info}}</p>
+    <p><strong>Assigned to: </strong>{{item.linkedTo}}</p>
+    <button ion-button full icon-left (click)="createCode()">
+      <ion-icon name="ios-barcode"></ion-icon> Create Code</button>
+  </div>
+  <ion-card *ngIf="createdCode">
+    <ngx-qrcode [qrc-value]="createdCode"></ngx-qrcode>
+    <ion-card-content>
+      <p>Value: {{ createdCode }}</p>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

@@ -1,0 +1,74 @@
+page-plant-add {
+    .profile-image-wrapper {
+      text-align: center;
+      margin: 20px 0;
+  
+      .profile-image {
+        width: 96px;
+        height: 96px;
+        border-radius: 50%;
+  
+        display: inline-block;
+  
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+      }
+  
+      .profile-image-placeholder {
+        display: inline-block;
+  
+        background-color: #eee;
+        width: 96px;
+        height: 96px;
+        border-radius: 50%;
+  
+        font-size: 12px;
+  
+        ion-icon {
+          font-size: 44px;
+          margin-bottom: -10px;
+          margin-top: 10px;
+        }
+      }
+    }
+  
+    p {
+      font-size: 0.8em;
+      color: red;
+    }
+  
+    .swiper-slide {
+        display: block;
+    }
+  
+    ion-label{
+        text-indent: 10px;
+    }
+    ion-label, .select-text {
+      margin-left: 10px;
+    }
+    ion-input, ion-select, ion-textarea {
+        background-color: #f2f2f2;
+        padding: 5px 10px;
+        min-height: 50px;
+    }
+  
+    .invalid {
+        border: 1px solid #ea6153;
+    }
+  
+    .list-md .item-input:last-child {
+      border-bottom: 0px solid #dedede;
+    }
+  
+    ion-range{
+      padding-top: 0px;
+    }
+  
+      ion-icon::before {
+        display: initial;
+      }
+    
+  }
+  

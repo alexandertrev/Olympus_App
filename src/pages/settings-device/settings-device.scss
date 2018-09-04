@@ -1,0 +1,51 @@
+page-settings-device {
+    .item-profile {
+        width: 100%;
+        background-position: center center;
+        background-size: cover;
+        height: 190px;
+      }
+    
+      .slide-title {
+        margin-top: 2.8rem;
+      }
+    
+      b {
+        font-weight: 500;
+      }
+    
+      p {
+        padding: 0 40px;
+        font-size: 14px;
+        line-height: 1.5;
+        color: #60646B;
+    
+        b {
+          color: #000000;
+        }
+      }
+    
+      .swiper-slide {
+          display: block;
+      }
+    
+      ion-label{
+          text-indent: 10px;
+      }
+      ion-label, .select-text {
+        margin-left: 10px;
+      }
+      ion-input, ion-select, ion-textarea {
+          background-color: #f2f2f2;
+          padding: 5px 10px;
+          min-height: 50px;
+      }
+        
+      .invalid {
+          border: 1px solid #ea6153;
+      }
+    
+      .list-md .item-input:last-child {
+        border-bottom: 0px solid #dedede;
+      }
+}

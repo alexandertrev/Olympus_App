@@ -1,0 +1,4 @@
+<ion-list>
+  <button ion-item (click)="disconnect()">Disconnect - {{cur_user}}</button>
+  <button *ngIf="isAdmin" ion-item (click)="openDeviceList()">Device list</button>
+</ion-list>

@@ -1,0 +1,40 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Family list</ion-title>
+
+    <ion-buttons end *ngIf="showAdd && gotServerAnswer && !gotErrorFromServer">
+      <button ion-button icon-only (click)="addItem()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+  <ion-toolbar no-border-top [(ngModel)]="searchField">
+    <ion-searchbar placeholder="Search family"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list>
+    <ion-item-sliding *ngFor="let item of items | filter: searchField">
+      <button ion-item (click)="openItem(item)">
+        <ion-thumbnail item-start>
+          <img [src]="item.pic" />
+        </ion-thumbnail>
+        <h2>{{item.familyName}}</h2>
+        <p>{{item.description}}</p>
+        <ion-note item-end *ngIf="item.note">{{item.note}}</ion-note>
+      </button>
+
+      <ion-item-options>
+        <button ion-button color="danger" (click)="deleteItem(item)">
+            DELETE
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+  <p *ngIf="!gotServerAnswer" padding>Loading plants family list, please wait...</p>
+  <p *ngIf="gotServerAnswer && !gotErrorFromServer && items.length==0" padding>Families not added yet, press on the plus above to add one.</p>
+  <p *ngIf="gotServerAnswer && gotErrorFromServer" padding>Error occurred try again later</p>
+</ion-content>

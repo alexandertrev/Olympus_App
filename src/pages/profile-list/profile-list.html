@@ -1,0 +1,39 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>My Profiles</ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="addItem()" *ngIf="gotServerAnswer && !gotErrorFromServer">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+
+  <ion-list>
+    <ion-item-sliding *ngFor="let profile of profiles">
+      <button ion-item (click)="openItem(profile)">
+        <ion-avatar item-start>
+          <img [src]="profile.plant.pic" />
+        </ion-avatar>
+        <h2>
+          <strong>Profile name:</strong> {{profile.profileName}}</h2>
+        <p>
+          <strong>Plant type: </strong>{{profile.plant.plantName}}</p>
+      </button>
+
+      <ion-item-options>
+        <button ion-button color="danger" (click)="deleteItem(plant)">
+          DELETE
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+  <p *ngIf="!gotServerAnswer" padding>Loading profile list, please wait...</p>
+  <p *ngIf="gotServerAnswer && !gotErrorFromServer && profiles.length==0" padding>You didnt add profiles yet, press on the plus above to add one.</p>
+  <p *ngIf="gotServerAnswer && gotErrorFromServer" padding>Error occurred try again later</p>
+</ion-content>

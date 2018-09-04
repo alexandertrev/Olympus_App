@@ -1,0 +1,21 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ item.familyName }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <div class="item-profile" text-center #pic [style.background-image]="'url(' + item.pic + ')'">
+  </div>
+
+  <div class="item-detail" padding>
+    <h2>{{item.familyName}}</h2>
+    <p>{{item.description}}</p>
+    <button ion-button outline small (click)="openPlantsList()">Plants list</button>
+  </div>
+
+
+</ion-content>

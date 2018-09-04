@@ -1,0 +1,198 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons left>
+      <button ion-button icon-left (click)="prev()">
+        <ion-icon name="arrow-back"></ion-icon> Prev</button>
+    </ion-buttons>
+
+    <ion-title text-center>Device config</ion-title>
+
+    <ion-buttons *ngIf="!isLastSlide" right>
+      <button ion-button icon-right (click)="next()" [disabled]="nextDisabled">Next
+        <ion-icon name="arrow-forward"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <ion-buttons *ngIf="isLastSlide" right>
+      <button ion-button (click)="finish()" [disabled]="!pic">Finish
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-slides #configSlider pager="true" dir="ltr" [initialSlide]="sliderStart" (ionSlideDidChange)="slideChanged()">
+    <!-- ---------------------------------------------------------SLIDE 0 WELCOME----------------------------------------------- -->
+    <ion-slide>
+      <h1>Welcome To device configuration</h1>
+      <p text-left>You need config your device before you will be able to use it.</p>
+      <p text-left>To config, plug the device to your home router and connect your phone to the same network and press config</p>
+      <button ion-button large (click)="findDevice()">Config</button>
+    </ion-slide>
+    <!-- ---------------------------------------------------------SLIDE 1 WIFI-------------------------------------------------- -->
+    <ion-slide padding>
+      <div *ngIf="searchingWifi" style="text-align: center;">
+        <br>
+        <br> Detecting WiFi!
+        <br>
+        <br>
+        <ion-spinner name="bubbles"></ion-spinner>
+        <br>
+        <br>
+      </div>
+      <form *ngIf="wifiForm && !searchingWifi" [formGroup]="wifiForm" (ngSubmit)="wifiConfirmConfig()">
+        <h1>Choose wifi network</h1>
+        <ion-list no-lines>
+
+          <ion-item>
+            <ion-label floating>Choose network</ion-label>
+            <ion-select formControlName="ssid" (ionChange)="wifiChanged()">
+              <ion-option *ngFor="let network of networks" [value]="network.ssid + ':' + network.security">{{network.ssid}} - {{ network.security }}</ion-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item *ngIf="showPassword">
+            <ion-label floating>Password</ion-label>
+            <ion-input type="password" formControlName="password"></ion-input>
+          </ion-item>
+          <br>
+
+          <button ion-button full [disabled]="wifiSubmitAtempt || !wifiForm.valid">
+            <ion-spinner *ngIf="wifiSubmitAtempt" name="bubbles"></ion-spinner> Confirm</button>
+          <button ion-button full (click)="getWifiNetworks()" [disabled]="wifiSubmitAtempt">Scan again</button>
+        </ion-list>
+      </form>
+    </ion-slide>
+    <!-- ---------------------------------------------------------SLIDE 2 PLANT------------------------------------------------ -->
+    <ion-slide padding>
+      <h1>Choose Plant</h1>
+      <form *ngIf="plantForm" [formGroup]="plantForm" (ngSubmit)="addDeviceToUser()">
+        <ion-list no-lines>
+          <ion-item>
+            <ion-label floating>Name</ion-label>
+            <ion-input type="text" formControlName="name"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label floating>Plant family</ion-label>
+            <ion-select formControlName="plantFamily" (ionChange)="familyChanged($event)">
+              <ion-option *ngFor="let family of families" [value]="family.familyName">{{family.familyName}}</ion-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-label floating>Plant</ion-label>
+            <ion-select formControlName="plantId" (ionChange)="onPlantChange()">
+              <ion-option *ngFor="let plant of plants" [value]="plant._id">{{plant.plantName}}</ion-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-label><strong>Location:</strong>
+              <span [ngClass]="'location-'+!plantForm.controls['location'].value">Outside</span> /
+              <span [ngClass]="'location-'+plantForm.controls['location'].value">Inside</span>
+            </ion-label>
+            <ion-toggle formControlName="location" color="secondary"></ion-toggle>
+          </ion-item>
+
+        </ion-list>
+      </form>
+      <div *ngIf="curPlant" class="item-profile" text-center #pic [style.background-image]="'url(' + curPlant.pic + ')'">
+      </div>
+    </ion-slide>
+    <!-- ---------------------------------------------------------SLIDE 3 PROFILE---------------------------------------------- -->
+    <ion-slide padding>
+      <h1>Choose Profile</h1>
+      <ion-list>
+        <ion-item>
+          <ion-label floating>Choose Profile</ion-label>
+          <ion-select [(ngModel)]="profile" name="profile" (ionChange)="profileChanged()">
+            <ion-option [value]="curDefaultProfile">Default</ion-option>
+            <ion-option *ngFor="let profile of profiles" [value]="profile">{{profile.profileName}}</ion-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Custom profile</ion-label>
+          <ion-toggle (ionChange)="isDisabled = !isDisabled" color="greenColor"></ion-toggle>
+        </ion-item>
+      </ion-list>
+      <hr>
+      <div class="disabledClass">
+
+        <form *ngIf="plantForm" [formGroup]="profileForm" (ngSubmit)="addDeviceToUser()">
+          <ion-item>
+            <ion-label floating>Sun needs</ion-label>
+            <ion-select formControlName="sunNeeds" [disabled]='isDisabled'>
+              <ion-option value="Full sun">Full sun</ion-option>
+              <ion-option value="Partial sun">Partial sun</ion-option>
+              <ion-option value="Shady">Shady</ion-option>
+              <ion-option value="Full shade">Full shade</ion-option>
+            </ion-select>
+          </ion-item>
+        </form>
+
+        <ion-list no-lines>
+          <ion-item>
+            Soil needs
+            <ion-icon small name="ios-water-outline" style="display:initial;"></ion-icon>%
+            <ion-badge item-end [ngClass]="'soilBadge-'+isDisabled">{{moist.lower}}</ion-badge>
+            <ion-badge item-end [ngClass]="'soilBadge-'+isDisabled">{{moist.upper}}</ion-badge>
+          </ion-item>
+          <ion-item>
+            <ion-range [disabled]='isDisabled' dualKnobs="true" [(ngModel)]="moist" min="0" max="100" step="10" color="myBrown" snaps="true"
+              (ionChange)="moistChanged()">
+              <ion-icon range-left small [ngClass]="'soilIcon-'+isDisabled" name="ios-water-outline"></ion-icon>
+              <ion-icon range-right small [ngClass]="'soilIcon-'+isDisabled" name="water"></ion-icon>
+            </ion-range>
+          </ion-item>
+        </ion-list>
+
+        <ion-list no-lines>
+          <ion-item>
+            Temperature &#8451;
+            <ion-badge item-end [ngClass]="'heatBadge-'+isDisabled">{{heat.lower}}</ion-badge>
+            <ion-badge item-end [ngClass]="'heatBadge-'+isDisabled">{{heat.upper}}</ion-badge>
+          </ion-item>
+          <ion-item>
+            <ion-range [disabled]='isDisabled' dualKnobs="true" [(ngModel)]="heat" min="0" max="50" step="2" color="danger" snaps="true"
+              (ionChange)="heatChanged()">
+              <ion-icon range-left small [ngClass]="'heatIcon-'+isDisabled" name="thermometer"></ion-icon>
+              <ion-icon range-right [ngClass]="'heatIcon-'+isDisabled" name="thermometer"></ion-icon>
+            </ion-range>
+          </ion-item>
+        </ion-list>
+      </div>
+      <!-- <button ion-button full type="submit" [disabled]="!plantForm.valid">Confirm</button> -->
+      <br>
+    </ion-slide>
+    <!-- ---------------------------------------------------------SLIDE 4 PIC--------------------------------------------------- -->
+    <ion-slide>
+      <h1>You almost there!</h1>
+      <p text-center>Choose picture to your plant and press finish</p>
+          <ion-list radio-group [(ngModel)]="pic" name="pic">
+            <ion-item>
+              <ion-label>Default</ion-label>
+              <ion-radio value="default"></ion-radio>
+            </ion-item>
+        
+            <ion-item>
+              <ion-label>Plant default</ion-label>
+              <ion-radio value="plant_default"></ion-radio>
+            </ion-item>
+        
+            <ion-item>
+              <ion-label>Custom</ion-label>
+              <ion-radio value="custom"></ion-radio>
+            </ion-item>
+        
+            <!-- <ion-item>
+              <input type="file" name="pic" accept="image/*">
+            </ion-item> -->
+          </ion-list>
+          <div *ngIf="pic" class="item-profile" text-center #pic [style.background-image]="'url(' + curPlant.pic + ')'">
+          </div>
+    </ion-slide>
+  </ion-slides>
+
+</ion-content>

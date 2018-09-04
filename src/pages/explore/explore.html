@@ -1,0 +1,70 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Explore</ion-title>
+    <ion-buttons end *ngIf="showAdd && gotServerAnswer && !gotErrorFromServer">
+      <button ion-button icon-only (click)="addItem()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="search($event)">
+        <ion-icon name="search"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+  <ion-navbar>
+      <ion-segment [(ngModel)]="exploreType" (ionChange)="onChange()">
+        <ion-segment-button value="family">
+          Families
+        </ion-segment-button>
+        <ion-segment-button value="plants">
+          Plants
+        </ion-segment-button>
+      </ion-segment>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content [ngSwitch]="exploreType">
+  <ion-list no-lines *ngSwitchCase="'family'">
+    <ion-list>
+      <ion-item-sliding *ngFor="let item of families | filter: searchField">
+        <button ion-item (click)="openFamily(item)">
+          <ion-thumbnail item-start>
+            <img [src]="item.pic" />
+          </ion-thumbnail>
+          <h2>{{item.familyName}}</h2>
+          <p>{{item.description}}</p>
+          <ion-note item-end *ngIf="item.note">{{item.note}}</ion-note>
+        </button>
+  
+        <ion-item-options>
+          <button ion-button color="danger" (click)="deleteItem(item)">
+              DELETE
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+  </ion-list>
+
+  <ion-list no-lines *ngSwitchCase="'plants'">
+    <ion-list>
+      <ion-item-sliding *ngFor="let plant of plants | filter: searchField">
+        <button ion-item (click)="openPlant(plant)">
+          <ion-thumbnail item-start>
+            <img [src]="plant.pic" />
+          </ion-thumbnail>
+          <h2>{{plant.plantName}}</h2>
+          <p><strong>Plant Family: </strong>{{plant.plantFamily}}</p>
+        </button>
+  
+        <ion-item-options>
+          <button ion-button color="danger" (click)="deleteItem(plant)">
+              DELETE
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+  </ion-list>
+</ion-content>

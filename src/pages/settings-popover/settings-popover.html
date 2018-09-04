@@ -1,0 +1,12 @@
+<ion-list>
+    <button ion-item (click)="openProfileSettings()">Profile settings</button>
+    <button ion-item (click)="openDeviceSettings()">Change wifi</button>
+    <ion-item>
+        <ion-label>
+            Auto
+            <br>
+            Watering:
+        </ion-label>
+        <ion-toggle [(ngModel)]="fix_pump" color="primary" (ionChange)="changeFixPump()"></ion-toggle>
+    </ion-item>
+</ion-list>

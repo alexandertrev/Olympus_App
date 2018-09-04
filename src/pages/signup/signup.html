@@ -1,0 +1,54 @@
+<ion-header>
+
+  <ion-navbar color="greenColor">
+    <ion-title>Sign up</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-list no-lines>
+    <form [formGroup]="form" (submit)="doSignup()">
+      <ion-item>
+        <ion-label color="greenColor" floating>Full name</ion-label>
+        <ion-input type="text" formControlName="name" [ngClass]="form.controls['name'].invalid && (form.controls['name'].dirty || submitAttempt) ? 'invalid' : ''"></ion-input>
+      </ion-item>
+
+      <ion-item *ngIf="form.controls['name'].invalid && (form.controls['name'].dirty || submitAttempt)">
+        <p>{{validateProvider.getFormValidationErrors(this.form, 'name','Name')}}</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="greenColor" floating>Email</ion-label>
+        <ion-input type="email" formControlName="email" [ngClass]="form.controls['email'].invalid && (form.controls['email'].dirty || submitAttempt) ? 'invalid' : ''"></ion-input>
+      </ion-item>
+
+      <ion-item *ngIf="form.controls['email'].invalid && (form.controls['email'].dirty || submitAttempt)">
+        <p>{{validateProvider.getFormValidationErrors(this.form, 'email','Email')}}</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="greenColor" floating>Password</ion-label>
+        <ion-input type="password" formControlName="password" [ngClass]="form.controls['password'].invalid && (form.controls['password'].dirty || submitAttempt) ? 'invalid' : ''"></ion-input>
+      </ion-item>
+
+      <ion-item *ngIf="form.controls['password'].invalid && (form.controls['password'].dirty || submitAttempt)">
+        <p>{{validateProvider.getFormValidationErrors(this.form, 'password','Password')}}</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="greenColor" floating>Repeat Password</ion-label>
+        <ion-input type="password" formControlName="passwordRep" [ngClass]="form.hasError('passwordRepInvalid') && (form.controls['passwordRep'].dirty || submitAttempt) ? 'invalid' : ''"></ion-input>
+      </ion-item>
+
+      <ion-item *ngIf="form.hasError('passwordRepInvalid') && (form.controls['passwordRep'].dirty || submitAttempt)">
+        <p>*Passwords do not match.</p>
+      </ion-item>
+
+      <div padding>
+        <button ion-button color="greenColor" block>Signup</button>
+      </div>
+    </form>
+  </ion-list>
+</ion-content>

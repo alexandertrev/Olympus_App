@@ -1,0 +1,18 @@
+<div *ngIf="message != 'search'">
+    <ion-list *ngIf="message != 'doors' && message != 'lamp'" text-center style="padding:5px; margin:0px;">
+        {{message}}
+    </ion-list>
+    <ion-item *ngIf="message == 'doors'" text-center>
+        <ion-label>Fix Doors</ion-label>
+        <ion-checkbox [(ngModel)]="fixDoors" style="margin-right: 0px;" (click)='changeDoorsFix()'></ion-checkbox>
+    </ion-item>
+    
+    <ion-item *ngIf="message == 'lamp'" text-center>
+        <ion-label>Fix Lamp</ion-label>
+        <ion-checkbox [(ngModel)]="fixLamp" style="margin-right: 0px;" (click)='changeLampFix()'></ion-checkbox>
+    </ion-item> 
+</div>
+
+<div *ngIf="message == 'search'">
+    <ion-searchbar (ionChange)="getItems($event)" placeholder="Search"></ion-searchbar> 
+</div>

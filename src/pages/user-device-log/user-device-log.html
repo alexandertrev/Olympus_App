@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons left>
+      <button ion-button icon-left (click)="back()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Status logs</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col (click)="sort('date')">
+            <strong>Date</strong>
+            <ion-icon *ngIf="isDesc && column=='date'" name="md-arrow-dropdown"></ion-icon>
+            <ion-icon *ngIf="!isDesc && column=='date'" name="md-arrow-dropup"></ion-icon>
+        <hr>
+      </ion-col>
+      <ion-col (click)="sort('moist')">
+        <strong>Moisture</strong>
+        <ion-icon *ngIf="isDesc && column=='moist'" name="md-arrow-dropdown"></ion-icon>
+        <ion-icon *ngIf="!isDesc && column=='moist'" name="md-arrow-dropup"></ion-icon>
+        <hr>
+      </ion-col>
+      <ion-col (click)="sort('sun')">
+        <strong>Sun</strong>
+        <ion-icon *ngIf="isDesc && column=='sun'" name="md-arrow-dropdown"></ion-icon>
+        <ion-icon *ngIf="!isDesc && column=='sun'" name="md-arrow-dropup"></ion-icon>
+        <hr>
+      </ion-col>
+      <ion-col (click)="sort('heat')">
+        <strong>Heat</strong>
+        <ion-icon *ngIf="isDesc && column=='heat'" name="md-arrow-dropdown"></ion-icon>
+        <ion-icon *ngIf="!isDesc && column=='heat'" name="md-arrow-dropup"></ion-icon>
+        <hr>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngFor="let record of recordList | orderBy: {property: column, direction: direction}">
+      <ion-col col-12>
+        <ion-row>
+          <ion-col col-3>
+            {{record.date | date:'dd/MM/yy HH:mm'}}
+          </ion-col>
+          <ion-col>
+            {{record.moist}}
+          </ion-col>
+          <ion-col>
+            {{record.sun}}
+          </ion-col>
+          <ion-col>
+            {{record.heat}}
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      <ion-col col-12>
+        <ion-row>
+          <ion-col>
+            <hr>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

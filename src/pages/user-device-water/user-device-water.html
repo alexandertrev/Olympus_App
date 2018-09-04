@@ -1,0 +1,50 @@
+<ion-header>
+    <ion-navbar>
+      <ion-buttons left>
+        <button ion-button icon-left (click)="back()">
+          <ion-icon name="arrow-back"></ion-icon>
+        </button>
+      </ion-buttons>
+      <ion-title>Water usage</ion-title>
+    </ion-navbar>
+  </ion-header>
+  
+  
+  <ion-content padding>
+    <ion-grid>
+      <ion-row>
+        <ion-col (click)="sort('Date')">
+          <strong>Date</strong>
+          <ion-icon *ngIf="isDesc && column=='Date'" name="md-arrow-dropdown"></ion-icon>
+          <ion-icon *ngIf="!isDesc && column=='Date'" name="md-arrow-dropup"></ion-icon>
+          <hr>
+        </ion-col>
+        <ion-col (click)="sort('amount')">
+          <strong>Amount</strong>
+          <ion-icon *ngIf="isDesc && column=='amount'" name="md-arrow-dropdown"></ion-icon>
+          <ion-icon *ngIf="!isDesc && column=='amount'" name="md-arrow-dropup"></ion-icon>
+          <hr>
+        </ion-col>
+      </ion-row>
+  
+      <ion-row *ngFor="let record of recordList | orderBy: {property: column, direction: direction}">
+        <ion-col col-12>
+          <ion-row>
+              <ion-col col-6>
+              {{record.Date | date:'dd/MM/yy HH:mm'}}
+            </ion-col>
+            <ion-col col-6>
+              {{record.amount}}
+            </ion-col>
+          </ion-row>
+        </ion-col>
+        <ion-col col-12>
+          <ion-row>
+            <ion-col>
+              <hr>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-content>
